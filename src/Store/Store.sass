@@ -1,0 +1,29 @@
+.root
+	display: flex
+	height: 90vh
+	max-width: 1500px
+	margin: 0 auto
+	margin-top: 5vh
+	perspective: 1000
+	transform-style: preserve-3d
+	& > *
+		flex: 1 4 auto
+		padding: 2rem
+		border: 10px double lighten(black, 10%)
+		position: relative
+		background: white
+		transition: all 0.3s
+		overflow: auto
+		&:first-child
+			flex-shrink: 1
+			flex-basis: 50%
+		&:nth-child(2)
+			border-left: 0
+			border-right: 0
+			min-width: 300px
+		&:last-child
+			flex-shrink: 1
+			flex-basis: 50%
+
+button
+ 	cursor: pointer

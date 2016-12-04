@@ -1,0 +1,51 @@
+@import ../mixins/main
+
+*
+	box-sizing: border-box
+
+body
+	background-color: $lightGrey
+
+.root
+	width: 100%
+	position: relative
+	top: 10vh
+	border: 1px solid black
+	box-sizing: border-box
+	text-align: center
+	padding: 25px 5px
+	background-color: white
+	@media (min-width: $tablet)
+		width: 500px
+		margin: 0 auto
+
+	h1
+		font-size: 1.5em
+		text-transform: uppercase
+
+.storeForm
+	width: 100%
+
+	button,
+	input
+		display: block
+		margin: 0 auto
+		box-sizing: border-box
+		width: 80%
+
+	input
+		font-size: 2em
+		text-align: center
+
+	button
+		background: none
+		outline: none
+		border: 1px solid
+		margin-top: 5px
+		font-size: 1em
+		text-transform: uppercase
+		transition: all 0.2s
+		padding: 5px 0
+		&:hover
+			background-color: $black
+			color: white

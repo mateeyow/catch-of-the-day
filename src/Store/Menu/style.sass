@@ -1,0 +1,61 @@
+@import ../../mixins/main
+
+.root
+
+.header
+	text-align: center
+
+.item
+	border-top: 1px solid black
+	border-bottom: 2px solid black
+	display: flex
+	padding: 10px 0
+	margin-top: 5px
+
+	& > div:first-child
+		width: 40%
+
+		img
+			width: 100%
+
+	& > div:last-child
+		width: 60%
+		padding-left: 10px
+
+.itemName
+	display: flex
+	align-items: center
+	font-size: 28px
+	margin: 0
+	justify-content: space-between
+	font-weight: normal
+	text-transform: uppercase
+	line-height: 0.9
+
+	span
+		font-size: 14px
+
+.itemDesc
+	margin: 5px 0
+	font-size: 18px
+	font-weight: normal
+
+.addToOrder,
+.soldOut
+	background: none
+	outline: none
+	text-transform: uppercase
+	border: 1px solid black
+	transition: all 0.2s
+	padding: 2px 5px
+
+.addToOrder:hover
+	background: $black
+	color: white
+
+.soldOut
+	transform: rotate(-20deg) scale(2) translateX(50%) translateY(-50%)
+	color: $red
+	border: 2px solid $red
+	background-color: white
+	cursor: not-allowed

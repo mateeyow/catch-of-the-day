@@ -54,3 +54,17 @@ export const logout = (dispatch, firebase) => {
       dispatch({ type: types.LOGOUT_ERROR, error })
     })
 }
+
+export const watch = (dispatch, firebase, database, path) => {
+  database
+    .ref(path)
+    .on('value', (snapshot) => {
+      const data = snapshot.val()
+      const fishes = data.fishes || []
+      dispatch({ type: types.UPDATE_PROPS, data: fishes })
+    })
+}
+
+export const unwatch = (dispatch, firebase, database, path) => {
+  database.ref(path).off()
+}

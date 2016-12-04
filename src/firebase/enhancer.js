@@ -1,6 +1,7 @@
 import Firebase from 'firebase'
 
 import * as actions from './actions'
+let firebaseInstance
 
 export default (config, otherConfig) => next =>
   (reducer, initialState, middleware) => {
@@ -23,6 +24,8 @@ export default (config, otherConfig) => next =>
       Firebase.database.enableLogging(configs.enableLogging)
     }
 
+    const database = Firebase.database()
+
     const firebase = Object.defineProperty(Firebase, '_', {
       value: {
         watchers: {},
@@ -40,14 +43,27 @@ export default (config, otherConfig) => next =>
     const logout = () =>
       actions.logout(dispatch, firebase)
 
+    const watch = path =>
+      actions.watch(dispatch, firebase, database, path)
+
+    const unwatch = path =>
+      actions.unwatch(dispatch, firebase, database, path)
+
     firebase.helpers = {
       login,
-      logout
+      logout,
+      database,
+      watch,
+      unwatch
     }
 
     actions.init(dispatch, firebase)
 
-    store.firebase = firebase
+    store.firebase = firebaseInstance = firebase
 
     return store
   }
+
+export const getFirebase = () => {
+  return firebaseInstance
+}

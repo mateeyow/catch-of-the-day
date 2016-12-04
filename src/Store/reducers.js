@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 
 import * as types from './action_types'
+import * as firebaseTypes from '../firebase/constants'
 import { slugify } from '../helpers'
 
 const fishes = (state = [], action) => {
@@ -20,6 +21,8 @@ const fishes = (state = [], action) => {
         Object.assign({}, state[action.idx], action.data),
         ...state.slice(action.idx + 1)
       ]
+    case firebaseTypes.UPDATE_PROPS:
+      return [...action.data]
     default:
       return state
   }

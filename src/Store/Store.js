@@ -25,6 +25,40 @@ class Store extends Component {
     this.handleLogout = this.handleLogout.bind(this)
   }
 
+  componentWillMount () {
+    const { store: { firebase: { helpers } } } = this.context
+    const { params: { name } } = this.props
+    helpers.watch(name)
+  }
+
+  componentDidMount () {
+    const { store: { firebase: { helpers } } } = this.context
+    const { params: { name } } = this.props
+    const ref = helpers.database.ref(name)
+
+    ref
+      .once('value')
+      .then(snap => {
+        const data = snap.val() || {}
+        const { firebase } = this.props
+
+        if (!data.owner && firebase.uid) {
+          ref.set({ owner: firebase.uid })
+        }
+      })
+  }
+
+  componentWillUpdate ({ store, firebase }) {
+    const { store: { firebase: { helpers } } } = this.context
+    const { params: { name } } = this.props
+    if (firebase.isUpdated) {
+      helpers
+        .database
+        .ref(`${name}/fishes`)
+        .set(store.fishes)
+    }
+  }
+
   loadSampleData () {
     const { loadSamples, store } = this.props
     if (store.fishes.length === 0) {

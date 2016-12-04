@@ -51,9 +51,19 @@ const authError = (state = {}, action) => {
   }
 }
 
+const isUpdated = (state = false, action) => {
+  switch (action.type) {
+    case types.UPDATE_PROPS:
+      return true
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
   isInitializing,
   uid,
   profile,
-  authError
+  authError,
+  isUpdated
 })

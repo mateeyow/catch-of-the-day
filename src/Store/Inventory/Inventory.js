@@ -12,7 +12,7 @@ class Inventory extends Component {
 
     if (!firebase.uid) {
       return (
-        <div className={style.loginContainer}>
+        <div className={style.loginContainer} style={styleObj}>
           <h3>Sign in to manage your store's inventory</h3>
           {firebase.authError.message &&
             <ErrorMsg message={firebase.authError.message} />
@@ -25,7 +25,7 @@ class Inventory extends Component {
 
     if (owner && owner !== firebase.uid) {
       return (
-        <div>
+        <div style={styleObj}>
           <h3>Sorry, you aren't the owner of this store</h3>
         </div>
       )

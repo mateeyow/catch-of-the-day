@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
@@ -16,7 +15,7 @@ const firebaseConfig = {
 }
 
 export default (initialState) => {
-  const middleware = [thunk, routerMiddleware(browserHistory)]
+  const middleware = [routerMiddleware(browserHistory)]
   let store
 
   if (__DEVELOPMENT__) {

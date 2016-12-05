@@ -10,7 +10,7 @@ class Inventory extends Component {
   render () {
     const { loadSample, fishes, firebase, owner, styleObj } = this.props
 
-    if (!firebase.uid || !owner) {
+    if (!firebase.uid) {
       return (
         <div className={style.loginContainer}>
           <h3>Sign in to manage your store's inventory</h3>
@@ -23,7 +23,7 @@ class Inventory extends Component {
       )
     }
 
-    if (owner !== firebase.uid) {
+    if (owner && owner !== firebase.uid) {
       return (
         <div>
           <h3>Sorry, you aren't the owner of this store</h3>

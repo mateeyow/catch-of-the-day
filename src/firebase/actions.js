@@ -60,7 +60,9 @@ export const watch = (dispatch, firebase, database, path) => {
     .ref(path)
     .on('value', (snapshot) => {
       const data = snapshot.val()
-      const fishes = data.fishes || []
+      const fishes = data && data.fishes
+        ? data.fishes
+        : {}
       dispatch({ type: types.UPDATE_PROPS, data: fishes })
     })
 }

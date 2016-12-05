@@ -37,9 +37,16 @@ class Store extends Component {
   componentDidMount () {
     const { store: { firebase: { helpers } } } = this.context
     const { params: { name }, initOrder } = this.props
-    const ref = helpers.database.ref(name)
     const localStorageRef = window.localStorage.getItem(`order-${name}`)
     helpers.watch(name)
+
+    initOrder(JSON.parse(localStorageRef) || {})
+  }
+
+  componentWillReceiveProps () {
+    const { store: { firebase: { helpers } } } = this.context
+    const { params: { name } } = this.props
+    const ref = helpers.database.ref(name)
 
     ref
       .once('value')
@@ -55,8 +62,6 @@ class Store extends Component {
           owner: data.owner || firebase.uid
         })
       })
-
-    initOrder(JSON.parse(localStorageRef) || {})
   }
 
   componentWillUpdate ({ store, firebase }) {

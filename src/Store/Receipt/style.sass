@@ -9,14 +9,29 @@
 
 .totalContainer
 	padding: 10px 0
+	border-top: 3px double black 
+	border-bottom: 3px solid black
 
 	span
 		font-weight: bold
 
 .orderItems
 	& > div
-		border-top: 1px solid black
+		border-bottom: 1px solid black
 		padding: 10px 0
 
-	& > div:first-child
-		border-top: none
+.orderItemCont:hover > .orderName > button
+	display: initial
+
+.orderName
+	button
+		display: none
+		outline: none
+		border: none
+		background: none
+		transition: all 0.2s
+		padding-top: 0
+		padding-bottom: 0
+		&:hover
+			background-color: black
+			color: white

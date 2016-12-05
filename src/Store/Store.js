@@ -10,7 +10,7 @@ import { properName } from '../helpers'
 import style from './Store.sass'
 import {
   loadSamples, addItem, removeItem,
-  editItem, addOrder
+  editItem, addOrder, removeOrder
 } from './actions'
 
 class Store extends Component {
@@ -21,6 +21,7 @@ class Store extends Component {
     this.removeItem = this.removeItem.bind(this)
     this.onUpdateItem = this.onUpdateItem.bind(this)
     this.addToOrder = this.addToOrder.bind(this)
+    this.removeToOrder = this.removeToOrder.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
   }
@@ -61,7 +62,7 @@ class Store extends Component {
 
   loadSampleData () {
     const { loadSamples, store } = this.props
-    if (store.fishes.length === 0) {
+    if (Object.keys(store.fishes).length === 0) {
       loadSamples(fishes)
     }
   }
@@ -75,30 +76,41 @@ class Store extends Component {
     const { addItem } = this.props
 
     addItem({
-      name: name.value,
-      desc: desc.value,
-      image: image.value,
-      price: price.value,
-      status: status.value
+      [`fish${Date.now()}`]: {
+        name: name.value,
+        desc: desc.value,
+        image: image.value,
+        price: price.value,
+        status: status.value
+      }
     })
     ev.target.reset()
   }
 
-  removeItem (idx) {
+  removeItem (key) {
     const { removeItem } = this.props
-    removeItem(idx)
+    removeItem(key)
   }
 
-  onUpdateItem (idx, data, name) {
+  onUpdateItem (prop, data, name) {
     const { editItem, store: { fishes } } = this.props
     const { value } = data.target
-    let obj = Object.assign({}, fishes[idx], { [name]: value })
-    editItem(obj, idx)
+    const obj = Object.assign({}, fishes[prop], { [name]: value })
+    editItem({ [prop]: obj }, prop)
   }
 
-  addToOrder (item) {
-    const { addOrder } = this.props
-    addOrder(item)
+  addToOrder (key) {
+    const { addOrder, store: { fishes, orders } } = this.props
+    const data = Object.assign({}, fishes[key], orders[key])
+    data.quantity = data.quantity
+      ? data.quantity + 1
+      : 1
+    addOrder({ [key]: data })
+  }
+
+  removeToOrder (key) {
+    const { removeOrder } = this.props
+    removeOrder(key)
   }
 
   handleLogin (provider) {
@@ -123,6 +135,7 @@ class Store extends Component {
         />
         <Receipt
           orders={store.orders}
+          removeOrder={this.removeToOrder}
         />
         <Inventory
           fishes={store.fishes}
@@ -145,7 +158,8 @@ Store.propTypes = {
   addItem: PropTypes.func,
   removeItem: PropTypes.func,
   editItem: PropTypes.func,
-  addOrder: PropTypes.func
+  addOrder: PropTypes.func,
+  removeOrder: PropTypes.func
 }
 
 Store.contextTypes = {
@@ -154,5 +168,5 @@ Store.contextTypes = {
 
 export default connect(
   state => state,
-  { loadSamples, addItem, removeItem, editItem, addOrder }
+  { loadSamples, addItem, removeItem, editItem, addOrder, removeOrder }
 )(Store)

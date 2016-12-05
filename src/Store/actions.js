@@ -10,18 +10,23 @@ export const addItem = data => ({
   data
 })
 
-export const removeItem = idx => ({
+export const removeItem = key => ({
   type: types.REMOVE_ITEM,
-  idx
+  key
 })
 
-export const editItem = (data, idx) => ({
+export const editItem = (data, key) => ({
   type: types.EDIT_ITEM,
   data,
-  idx
+  key
 })
 
 export const addOrder = data => ({
   type: types.ADD_TO_ORDER,
   data
+})
+
+export const removeOrder = key => ({
+  type: types.REMOVE_ORDER,
+  key
 })

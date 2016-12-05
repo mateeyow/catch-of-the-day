@@ -2,7 +2,7 @@ import React from 'react'
 
 import style from './style.sass'
 
-export default ({ item, remove, edit, idx }) =>
+export default ({ item, remove, edit, prop }) =>
   <div className={style.container}>
     <input
       type='text'
@@ -10,7 +10,7 @@ export default ({ item, remove, edit, idx }) =>
       required
       placeholder='Name'
       value={item.name}
-      onChange={ev => edit(idx, ev, 'name')}
+      onChange={ev => edit(prop, ev, 'name')}
       className={style.smallInput}
     />
     <input
@@ -19,13 +19,13 @@ export default ({ item, remove, edit, idx }) =>
       required
       placeholder='Price'
       value={item.price}
-      onChange={ev => edit(idx, ev, 'price')}
+      onChange={ev => edit(prop, ev, 'price')}
       className={style.smallInput}
     />
     <select
       value={item.status}
       name='status'
-      onChange={ev => edit(idx, ev, 'status')}
+      onChange={ev => edit(prop, ev, 'status')}
       className={style.smallInput}
     >
       <option value='available'>Fresh!</option>
@@ -36,7 +36,7 @@ export default ({ item, remove, edit, idx }) =>
       required
       placeholder='Description'
       value={item.desc}
-      onChange={ev => edit(idx, ev, 'desc')}
+      onChange={ev => edit(prop, ev, 'desc')}
       className={style.fullInput}
     />
     <input
@@ -45,7 +45,7 @@ export default ({ item, remove, edit, idx }) =>
       required
       placeholder='Image Url'
       value={item.image}
-      onChange={ev => edit(idx, ev, 'image')}
+      onChange={ev => edit(prop, ev, 'image')}
       className={style.fullInput}
     />
     <button type='button' onClick={remove} className={style.fullInput}>Remove</button>

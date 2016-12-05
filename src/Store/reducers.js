@@ -4,25 +4,21 @@ import * as types from './action_types'
 import * as firebaseTypes from '../firebase/constants'
 import { slugify } from '../helpers'
 
-const fishes = (state = [], action) => {
+const fishes = (state = {}, action) => {
   switch (action.type) {
     case types.LOAD_SAMPLE_DATA:
-      return [...state, ...action.fishes]
+      return Object.assign({}, state, action.fishes)
     case types.ADD_ITEM:
-      return [action.data, ...state]
-    case types.REMOVE_ITEM:
-      return [
-        ...state.slice(0, action.idx),
-        ...state.slice(action.idx + 1)
-      ]
+      return Object.assign({}, action.data, state)
+    case types.REMOVE_ITEM: {
+      const newState = Object.assign({}, state)
+      delete newState[action.key]
+      return newState
+    }
     case types.EDIT_ITEM:
-      return [
-        ...state.slice(0, action.idx),
-        Object.assign({}, state[action.idx], action.data),
-        ...state.slice(action.idx + 1)
-      ]
+      return Object.assign({}, state, action.data)
     case firebaseTypes.UPDATE_PROPS:
-      return [...action.data]
+      return {...action.data}
     default:
       return state
   }
@@ -30,25 +26,25 @@ const fishes = (state = [], action) => {
 
 const orders = (state = {}, action) => {
   switch (action.type) {
-    case types.ADD_TO_ORDER: {
-      const slugified = slugify(action.data.name)
-      const quantity = state[slugified]
-        ? state[slugified].quantity + 1
-        : 1
-      const order = {
-        [slugified]: Object.assign({}, action.data, { quantity })
-      }
-
-      return Object.assign({}, state, order)
-    }
+    case types.ADD_TO_ORDER:
+      return Object.assign({}, state, action.data)
     case types.EDIT_ITEM: {
-      const slugified = slugify(action.data.name)
-      if (state[slugified]) {
-        const item = Object.assign({}, state[slugified], action.data)
-        return Object.assign({}, state, { [slugified]: item })
+      if (state[action.key]) {
+        const item = Object.assign({}, state[action.key], action.data[action.key])
+        return Object.assign({}, state, { [action.key]: item })
       }
 
       return state
+    }
+    case types.REMOVE_ITEM: {
+      const newState = Object.assign({}, state)
+      delete newState[action.key]
+      return newState
+    }
+    case types.REMOVE_ORDER: {
+      const newState = Object.assign({}, state)
+      delete newState[action.key]
+      return newState 
     }
     default:
       return state

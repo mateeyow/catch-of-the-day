@@ -26,19 +26,19 @@ class Inventory extends Component {
         <div>
           <h1>Inventory</h1>
           <button type='button' onClick={this.props.logout}>Log out</button>
-          {fishes
+          {Object.keys(fishes)
             .map((item, idx) =>
               <InventoryItem
-                item={item}
+                item={fishes[item]}
                 key={idx}
-                remove={() => this.props.removeItem(idx)}
+                remove={() => this.props.removeItem(item)}
                 edit={this.props.editItem}
-                idx={idx}
+                prop={item}
               />
             )
           }
           <Form addNewItem={this.props.addNewItem} />
-          {fishes.length === 0 &&
+          {Object.keys(fishes).length === 0 &&
             <button type='button' onClick={loadSample}>Load Sample Fishes</button>
           }
         </div>
@@ -50,7 +50,7 @@ class Inventory extends Component {
 Inventory.propTypes = {
   loadSample: PropTypes.func.isRequired,
   firebase: PropTypes.object.isRequired,
-  fishes: PropTypes.array,
+  fishes: PropTypes.object,
   addNewItem: PropTypes.func,
   removeItem: PropTypes.func,
   editItem: PropTypes.func,

@@ -12,10 +12,10 @@ class Menu extends Component {
       <div className={style.root}>
         <Header />
         <div>
-          {fishes
+          {Object.keys(fishes)
             .map((fish, idx) =>
               <MenuItem
-                item={fish}
+                item={fishes[fish]}
                 key={idx}
                 order={() => this.props.addOrder(fish)}
               />
@@ -28,7 +28,7 @@ class Menu extends Component {
 }
 
 Menu.propTypes = {
-  fishes: PropTypes.array,
+  fishes: PropTypes.object,
   addOrder: PropTypes.func
 }
 

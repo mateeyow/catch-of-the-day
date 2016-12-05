@@ -16,21 +16,21 @@ class Receipt extends Component {
             .map((order, idx) =>
               <OrderItems
                 order={orders[order]}
+                remove={() => this.props.removeOrder(order)}
                 key={idx}
               />
             )
           }
         </div>
-        <hr />
         <Total orders={orders} />
-        <hr />
       </div>
     )
   }
 }
 
 Receipt.propTypes = {
-  orders: PropTypes.object
+  orders: PropTypes.object,
+  removeOrder: PropTypes.func
 }
 
 export default Receipt

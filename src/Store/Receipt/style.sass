@@ -20,7 +20,20 @@
 		border-bottom: 1px solid black
 		padding: 10px 0
 
-.orderItemCont:hover > .orderName > button
+.orderItemCont button 
+	display: none
+	outline: none
+	border: none
+	background: none
+	transition: all 0.2s
+	padding-top: 0
+	padding-bottom: 0
+	&:hover
+		background-color: black
+		color: white
+
+.orderItemCont:hover > .orderName > button,
+.orderItemCont:hover > button
 	display: initial
 
 .orderName

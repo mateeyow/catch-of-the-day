@@ -5,6 +5,60 @@
 .header
 	text-align: center
 
+	h1
+		font-family: 'blanchcaps_inline', sans-serif !important
+		line-height: 0.7
+		font-size: 9em
+		display: flex
+		justify-content: center
+		margin: 0 !important
+
+	.ofThe
+		color: $orange
+		font-size: 25px
+		background: url('../../images/anchor.svg') center no-repeat
+		background-size: cover
+		display: flex
+		justify-content: center
+		align-items: center
+		padding: 0 0.5em
+
+		span:first-child
+		  padding-right: 20px
+		  position: relative
+		  right: -5px
+
+	h3
+		margin: 0
+		font-family: "haymakerregular", sans-serif
+		color: $orange
+		font-weight: normal
+		position: relative
+		display: inline-block
+
+		span
+			background-color: white
+			position: relative
+			z-index: 2
+			padding-left: 1rem
+			padding-right: 1rem
+
+		&:before,
+		&:after
+			z-index: 1
+			display: block
+			background: $black
+			position: absolute
+			width: 130%
+			height: 1px
+			content: ''
+			top: 5px
+			margin-left: -15%
+
+		&:after
+			top: auto
+			bottom: 10px
+
 .item
 	border-top: 1px solid black
 	border-bottom: 2px solid black

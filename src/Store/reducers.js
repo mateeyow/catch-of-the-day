@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 
 import * as types from './action_types'
 import * as firebaseTypes from '../firebase/constants'
-import { slugify } from '../helpers'
 
 const fishes = (state = {}, action) => {
   switch (action.type) {
@@ -44,8 +43,10 @@ const orders = (state = {}, action) => {
     case types.REMOVE_ORDER: {
       const newState = Object.assign({}, state)
       delete newState[action.key]
-      return newState 
+      return newState
     }
+    case types.INITIALIZE_ORDER:
+      return action.data
     default:
       return state
   }

@@ -30,3 +30,8 @@ export const removeOrder = key => ({
   type: types.REMOVE_ORDER,
   key
 })
+
+export const initOrder = data => ({
+  type: types.INITIALIZE_ORDER,
+  data
+})

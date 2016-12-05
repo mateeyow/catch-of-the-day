@@ -6,10 +6,10 @@ import style from './style.sass'
 
 class Receipt extends Component {
   render () {
-    const { orders } = this.props
+    const { orders, fishes, styleObj } = this.props
 
     return (
-      <div className={style.root}>
+      <div className={style.root} style={styleObj}>
         <h1>Your Order</h1>
         <div className={style.orderItems}>
           {Object.keys(orders)
@@ -18,11 +18,12 @@ class Receipt extends Component {
                 order={orders[order]}
                 remove={() => this.props.removeOrder(order)}
                 key={idx}
+                fish={fishes[order]}
               />
             )
           }
         </div>
-        <Total orders={orders} />
+        <Total orders={orders} fishes={fishes} />
       </div>
     )
   }
@@ -30,7 +31,9 @@ class Receipt extends Component {
 
 Receipt.propTypes = {
   orders: PropTypes.object,
-  removeOrder: PropTypes.func
+  fishes: PropTypes.object,
+  removeOrder: PropTypes.func,
+  styleObj: PropTypes.object
 }
 
 export default Receipt

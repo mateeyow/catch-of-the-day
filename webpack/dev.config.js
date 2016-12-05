@@ -47,11 +47,21 @@ module.exports = {
       },
       {
         test: /\.sass$/,
-        loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          'postcss',
+          'resolve-url',
+          'sass?sourceMap'
+        ]
       },
       {
         test: /\.css$/,
         loader: 'style!css'
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=10000&name=[name]-[hash].[ext]'
       }
     ]
   },

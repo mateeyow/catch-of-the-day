@@ -6,10 +6,10 @@ import style from './style.sass'
 
 class Menu extends Component {
   render () {
-    const { fishes } = this.props
+    const { fishes, styleObj } = this.props
 
     return (
-      <div className={style.root}>
+      <div className={style.root} style={styleObj}>
         <Header />
         <div>
           {Object.keys(fishes)
@@ -29,7 +29,8 @@ class Menu extends Component {
 
 Menu.propTypes = {
   fishes: PropTypes.object,
-  addOrder: PropTypes.func
+  addOrder: PropTypes.func,
+  styleObj: PropTypes.object
 }
 
 export default Menu

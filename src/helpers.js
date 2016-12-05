@@ -1,14 +1,3 @@
-export const slugify = text => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '')
-}
-
 export const formatPrice = price =>
   `$${(price / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
 

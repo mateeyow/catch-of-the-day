@@ -1,0 +1,48 @@
+@import ../mixins/main
+
+.root
+	display: flex
+	width: 100%
+	padding: 10px 20px
+	justify-content: space-between
+	align-items: center
+
+.foldfalse
+	text-transform: uppercase
+	color: white
+	background-color: $black
+	border: 1px solid $black
+	padding: 5px 15px
+	font-size: 14px
+	outline: none
+	transition: all 0.2s
+
+.foldtrue
+	text-transform: uppercase
+	color: $black
+	background-color: white
+	border: 1px solid $black
+	padding: 5px 15px
+	font-size: 14px
+	outline: none
+	transition: all 0.2s
+
+.navigation
+	& > *
+		margin-left: 10px
+
+	button
+		text-transform: uppercase
+		color: $black
+		border: 1px solid $black
+		background-color: white
+		font-weight: bold
+		font-size: 16px
+		padding: 5px 10px
+		transition: all 0.2s
+		&:hover
+			color: white
+			background-color: $black
+
+	a
+		text-decoration: none

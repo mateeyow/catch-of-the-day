@@ -8,9 +8,9 @@ import style from './style.sass'
 
 class Inventory extends Component {
   render () {
-    const { loadSample, fishes, firebase } = this.props
+    const { loadSample, fishes, firebase, owner, styleObj } = this.props
 
-    if (!firebase.uid) {
+    if (!firebase.uid || !owner) {
       return (
         <div className={style.loginContainer}>
           <h3>Sign in to manage your store's inventory</h3>
@@ -21,29 +21,38 @@ class Inventory extends Component {
           <LoginBtn login={this.props.login} provider='google' />
         </div>
       )
-    } else {
+    }
+
+    if (owner !== firebase.uid) {
       return (
         <div>
-          <h1>Inventory</h1>
-          <button type='button' onClick={this.props.logout}>Log out</button>
-          {Object.keys(fishes)
-            .map((item, idx) =>
-              <InventoryItem
-                item={fishes[item]}
-                key={idx}
-                remove={() => this.props.removeItem(item)}
-                edit={this.props.editItem}
-                prop={item}
-              />
-            )
-          }
-          <Form addNewItem={this.props.addNewItem} />
-          {Object.keys(fishes).length === 0 &&
-            <button type='button' onClick={loadSample}>Load Sample Fishes</button>
-          }
+          <h3>Sorry, you aren't the owner of this store</h3>
         </div>
       )
     }
+
+    return (
+      <div style={styleObj}>
+        <h1 className={style.inventoryHead}>Inventory</h1>
+        {Object.keys(fishes)
+          .map((item, idx) =>
+            <InventoryItem
+              item={fishes[item]}
+              key={idx}
+              remove={() => this.props.removeItem(item)}
+              edit={this.props.editItem}
+              prop={item}
+            />
+          )
+        }
+        <Form addNewItem={this.props.addNewItem} />
+        {Object.keys(fishes).length === 0 &&
+          <button type='button' onClick={loadSample} className={style.loadSample}>
+            Load Sample Fishes
+          </button>
+        }
+      </div>
+    )
   }
 }
 
@@ -55,7 +64,9 @@ Inventory.propTypes = {
   removeItem: PropTypes.func,
   editItem: PropTypes.func,
   login: PropTypes.func,
-  logout: PropTypes.func
+  logout: PropTypes.func,
+  owner: PropTypes.string,
+  styleObj: PropTypes.object
 }
 
 export default Inventory

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
+import Spinner from 'react-spinkit'
 
 import { Inventory } from './Inventory'
 import { Menu } from './Menu'
@@ -10,8 +11,13 @@ import { properName } from '../helpers'
 import style from './Store.sass'
 import {
   loadSamples, addItem, removeItem,
-  editItem, addOrder, removeOrder
+  editItem, addOrder, removeOrder,
+  initOrder
 } from './actions'
+
+const styleMenu = { transform: 'translateX(50%) rotateY(6deg) translateX(-50%)' }
+const styleReceipt = { transform: 'translateX(-50%) rotateY(-14deg) translateX(50%)' }
+const styleInventory = { transform: 'translateX(-50%) rotateY(10deg) translateX(50%) scale(1.08) translateX(24px)' }
 
 class Store extends Component {
   constructor () {
@@ -23,19 +29,17 @@ class Store extends Component {
     this.addToOrder = this.addToOrder.bind(this)
     this.removeToOrder = this.removeToOrder.bind(this)
     this.handleLogin = this.handleLogin.bind(this)
-    this.handleLogout = this.handleLogout.bind(this)
-  }
-
-  componentWillMount () {
-    const { store: { firebase: { helpers } } } = this.context
-    const { params: { name } } = this.props
-    helpers.watch(name)
+    this.state = {
+      owner: null
+    }
   }
 
   componentDidMount () {
     const { store: { firebase: { helpers } } } = this.context
-    const { params: { name } } = this.props
+    const { params: { name }, initOrder } = this.props
     const ref = helpers.database.ref(name)
+    const localStorageRef = window.localStorage.getItem(`order-${name}`)
+    helpers.watch(name)
 
     ref
       .once('value')
@@ -46,18 +50,31 @@ class Store extends Component {
         if (!data.owner && firebase.uid) {
           ref.set({ owner: firebase.uid })
         }
+
+        this.setState({
+          owner: data.owner || firebase.uid
+        })
       })
+
+    initOrder(JSON.parse(localStorageRef) || {})
   }
 
   componentWillUpdate ({ store, firebase }) {
     const { store: { firebase: { helpers } } } = this.context
     const { params: { name } } = this.props
-    if (firebase.isUpdated) {
+    if (firebase.isUpdated && firebase.uid && (firebase.uid === this.state.owner)) {
       helpers
         .database
         .ref(`${name}/fishes`)
         .set(store.fishes)
     }
+    window.localStorage.setItem(`order-${name}`, JSON.stringify(store.orders))
+  }
+
+  componentWillUnmount () {
+    const { store: { firebase: { helpers } } } = this.context
+    const { params: { name } } = this.props
+    helpers.unwatch(name)
   }
 
   loadSampleData () {
@@ -118,13 +135,16 @@ class Store extends Component {
     helpers.login(properName(provider))
   }
 
-  handleLogout () {
-    const { store: { firebase: { helpers } } } = this.context
-    helpers.logout()
-  }
-
   render () {
-    const { store } = this.props
+    const { store, firebase, navbar } = this.props
+
+    if (firebase.isInitializing) {
+      return (
+        <div className={style.spinnerContainer}>
+          <Spinner spinnerName='cube-grid' noFadeIn />
+        </div>
+      )
+    }
 
     return (
       <div className={style.root}>
@@ -132,10 +152,13 @@ class Store extends Component {
         <Menu
           fishes={store.fishes}
           addOrder={this.addToOrder}
+          styleObj={navbar ? styleMenu : {}}
         />
         <Receipt
+          fishes={store.fishes}
           orders={store.orders}
           removeOrder={this.removeToOrder}
+          styleObj={navbar ? styleReceipt : {}}
         />
         <Inventory
           fishes={store.fishes}
@@ -144,8 +167,9 @@ class Store extends Component {
           removeItem={this.removeItem}
           editItem={this.onUpdateItem}
           login={this.handleLogin}
-          logout={this.handleLogout}
           firebase={this.props.firebase}
+          owner={this.state.owner}
+          styleObj={navbar ? styleInventory : {}}
         />
       </div>
     )
@@ -159,7 +183,9 @@ Store.propTypes = {
   removeItem: PropTypes.func,
   editItem: PropTypes.func,
   addOrder: PropTypes.func,
-  removeOrder: PropTypes.func
+  removeOrder: PropTypes.func,
+  initOrder: PropTypes.func,
+  navbar: PropTypes.bool
 }
 
 Store.contextTypes = {
@@ -168,5 +194,5 @@ Store.contextTypes = {
 
 export default connect(
   state => state,
-  { loadSamples, addItem, removeItem, editItem, addOrder, removeOrder }
+  { loadSamples, addItem, removeItem, editItem, addOrder, removeOrder, initOrder }
 )(Store)
